@@ -19,7 +19,7 @@ class Amorphic {
       left, right, top, bottom = @rect get_slots: ['left, 'right, 'top, 'bottom]
       unless: @texture do: {
         glDisable(GL_TEXTURE_2D)
-        if: @material do: {
+        if: @material then: {
           glDisable(GL_LIGHTNING)
           glColor4fv(@material ambient rgba);
         } else: {

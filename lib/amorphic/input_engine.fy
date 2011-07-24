@@ -14,6 +14,8 @@ class Amorphic {
     def initialize {
       @mouse = Input Mouse new
       @keyboard = Input Keyboard new
+      @mouse setup_event_hooks
+      @keyboard setup_event_hooks
     }
   }
 }

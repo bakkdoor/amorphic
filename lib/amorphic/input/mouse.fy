@@ -7,6 +7,9 @@ class Amorphic {
         @prev_cursor_pos = @cursor_pos
         # TODO hook up into glut mouse events
       }
+
+      def setup_event_hooks {
+      }
     }
   }
 }
