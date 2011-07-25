@@ -14,9 +14,9 @@ class Amorphic {
       }
 
       def mouse: button state: state x: x y: y {
-        "button: #{button} state: #{state} x: #{x} y: #{y}" println
-        { "down!" println } if: (state == GLUT_DOWN)
-        { "up!" println } if: (state == GLUT_UP)
+        # "button: #{button} state: #{state} x: #{x} y: #{y}" println
+        # { "down!" println } if: (state == GLUT_DOWN)
+        # { "up!" println } if: (state == GLUT_UP)
       }
 
       def entry: state {
