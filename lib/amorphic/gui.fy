@@ -1,6 +1,5 @@
 class Amorphic {
   class GUI : View {
-    # Add GL and GLUT namespaces in to make porting easier
     include: Gl
     include: Glu
     include: Glut
@@ -16,13 +15,12 @@ class Amorphic {
       @@gui
     }
 
-    # Placeholder for the window object
     def initialize: size ((640, 480)) {
       super initialize: $ Rect new: (0,0) size: size
       @width, @height = @rect width, @rect height
       @gui = self
       @children = []
-      @bgcolor = RGBA new: (0.7,0.7,0.7,0)
+      background_color: $ RGBA new: (200, 200, 200, 0)
       init_gl_window
     }
 
@@ -40,7 +38,7 @@ class Amorphic {
       @window = glutCreateWindow("humble beginnings")
       setup_event_hooks
 
-      # Enable smooth color shading
+      # smooth color shading
       glShadeModel(GL_SMOOTH)
     }
 
@@ -67,20 +65,19 @@ class Amorphic {
       # Displacement trick for exact pixelization
       glTranslatef(0.375, 0.375, 0)
 
-      # Draw a scene
-      glClearColor(@bgcolor r, @bgcolor g, @bgcolor b, @bgcolor a)
+      glClearColor((background_color r) / 255.0,
+                   (background_color g) / 255.0,
+                   (background_color b) / 255.0,
+                   background_color a)
       glClear(GL_COLOR_BUFFER_BIT)
 
       @children each: |c| {
         c draw
       }
 
-      # Swap buffers for display
       glutSwapBuffers()
     }
 
-
-    # The idle function to handle
     def idle {
       glutPostRedisplay()
     }
