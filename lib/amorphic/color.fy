@@ -1,6 +1,22 @@
 class Amorphic {
   RGBA = Struct new: ['r, 'g, 'b, 'a]
 
+  class RGBA {
+    def darkened_by: amount {
+      r = @r - amount max: 0
+      g = @g - amount max: 0
+      b = @b - amount max: 0
+      RGBA new: [r,g,b,0]
+    }
+
+    def lightened_by: amount {
+      r = @r + amount max: 0
+      g = @g + amount max: 0
+      b = @b + amount max: 0
+      RGBA new: [r,g,b,0]
+    }
+  }
+
   class Rubinius Tuple {
     def to_rgba {
       RGBA new: self
