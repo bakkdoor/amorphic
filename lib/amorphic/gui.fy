@@ -5,7 +5,7 @@ class Amorphic {
     include: Glut
 
     read_slot: 'window
-    read_write_slot: 'active_element
+    read_write_slots: ['active_element, 'title]
 
     def GUI create: size ((640, 480)) {
       @@gui = GUI new: size
@@ -21,7 +21,6 @@ class Amorphic {
       @gui = self
       @children = []
       background_color: $ RGBA new: (200, 200, 200, 0)
-      init_gl_window
     }
 
     def setup_event_hooks {
@@ -35,7 +34,7 @@ class Amorphic {
       glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
       glutInitWindowSize(@width, @height)
       glutInitWindowPosition(0, 0)
-      @window = glutCreateWindow("humble beginnings")
+      @window = glutCreateWindow(@title)
       setup_event_hooks
 
       # smooth color shading
@@ -92,7 +91,8 @@ class Amorphic {
       }
     }
 
-    def main_loop {
+    def start {
+      init_gl_window
       glutMainLoop()
     }
 

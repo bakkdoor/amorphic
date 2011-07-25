@@ -34,7 +34,7 @@ class Amorphic {
       @gui add_child: copy_button
     }
     def run {
-      @gui main_loop
+      @gui start
     }
   }
 }
