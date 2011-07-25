@@ -3,7 +3,7 @@ require("opengl")
 require("glut")
 # require("sdl")
 
-require: "amorphic/base_types"
+require: "amorphic/color"
 require: "amorphic/point"
 require: "amorphic/rect"
 require: "amorphic/view"

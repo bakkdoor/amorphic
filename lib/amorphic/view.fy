@@ -2,7 +2,7 @@ class Amorphic {
   class View {
     include: Gl
 
-    read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'color]
+    read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'background_color]
     read_slots: ['position, 'parent, 'texture]
 
     def initialize: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
@@ -21,58 +21,23 @@ class Amorphic {
       x1, x2 = @rect left, @rect right
       y1, y2 = @rect top, @rect bottom
 
-      unless: @texture do: {
-        glDisable(GL_TEXTURE_2D)
-        if: @material then: {
-          glDisable(GL_LIGHTING)
-          glColor4fv(@material ambient rgba);
-        } else: {
-          glDisable(GL_LIGHTING)
-          glColor3d(255,255,255)
-        }
-        glBegin(GL_QUADS)
-           glVertex2f(x1, y1)
-           glVertex2f(x2, y1)
-           glVertex2f(x2, y2)
-           glVertex2f(x1, y2)
-        glEnd()
+      glDisable(GL_LIGHTING)
+      if: @background_color then: {
+        @background_color inspect println
+        r, g, b = @background_color r, @background_color g, @background_color b
+        glColor3f(r / 255.0,
+                  g / 255.0,
+                  b / 255.0)
       } else: {
-        m_pTexture bind
-
-        if: @material then: {
-          glDisable(GL_LIGHTING)
-          glColor3f(@material ambient r / 255.0,
-                    @material ambient g / 255.0,
-                    @material ambient g / 255.0)
-          # m_pMaterial bind
-        } else: {
-          glColor3d(1, 1, 1)
-        }
-
-        if: (@texture masked?) then: {
-          glAlphaFunc(GL_GREATER, 0.0)
-          glEnable(GL_ALPHA_TEST)
-        }
-
-        glBegin(GL_QUADS)
-        #				Bottom Left	Bottom Left
-        glTexCoord2f(m_TexCoord[0] x, m_TexCoord[0] y)
-        glVertex3d(left, bottom, 0)
-        #				Bottom Right is Bottom Left	Bottom Right
-        glTexCoord2f(m_TexCoord[1] x, m_TexCoord[1] y)
-        glVertex3d(right, bottom, 0)
-        #				Top Right is Bottom Right	Top Right
-        glTexCoord2f(m_TexCoord[2] x, m_TexCoord[2] y)
-        glVertex3d(right, top, 0)
-        #				Top Left is Top Right	Top Left
-        glTexCoord2f(m_TexCoord[3] x, m_TexCoord[3] y)
-        glVertex3d(left, top, 0)
-        glEnd()
-
-        if: (@texture masked?) then: {
-          glDisable(GL_ALPHA_TEST);
-        }
+        glColor3d(1, 1, 1)
       }
+
+      glBegin(GL_QUADS)
+         glVertex2f(x1, y1)
+         glVertex2f(x2, y1)
+         glVertex2f(x2, y2)
+         glVertex2f(x1, y2)
+      glEnd()
 
       # draw children
       @children each: |c| {
@@ -125,7 +90,7 @@ class Amorphic {
           return true
         }
       }
-      unless: is_guy? do: {
+      unless: gui? do: {
         if: (position in_rect?: @rect) then: {
           @gui post_message: self receiver: nil message: 'aquire_focus
           return true
@@ -174,6 +139,7 @@ class Amorphic {
     def parent: @parent
     def add_child: child {
       @children << child
+      child gui: @gui
       child parent: self
     }
     def remove_child: child {
@@ -204,7 +170,7 @@ class Amorphic {
     def needs_redraw: @needs_redraw
 
     def gui? {
-      @is_gui
+      @gui == self
     }
   }
 }

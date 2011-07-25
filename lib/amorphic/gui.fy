@@ -7,19 +7,19 @@ class Amorphic {
 
     read_slot: 'window
 
+    def GUI create {
+      @@gui = GUI new
+    }
+
+    def GUI singleton {
+      @@gui
+    }
+
     # Placeholder for the window object
     def initialize {
-      @is_gui = true
+      @gui = self
       @children = []
       @bgcolor = RGBA new: (0.7,0.7,0.7,0)
-    }
-
-    def add_child: child {
-      @children << child
-    }
-
-    def remove_child: child {
-      @children remove: child
     }
 
     def setup_event_hooks {
@@ -91,6 +91,10 @@ class Amorphic {
 
     def main_loop {
       glutMainLoop()
+    }
+
+    def post_message: sender receiver: receiver message: msg {
+      "got message: #{msg} from: #{sender} receiver: #{receiver}" println
     }
   }
 }

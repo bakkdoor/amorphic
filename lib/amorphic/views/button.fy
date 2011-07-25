@@ -1,20 +1,43 @@
 class Amorphic {
   class Views {
     class Button : View {
+      read_write_slots: ['text, 'text_color]
       def initialize: @text rect: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
         initialize: @rect texture: @texture material: @material has_border: @has_border
+        @on_click_handlers = []
+        @text_color = RGBA new: (0.0, 0.0, 0.0, 0.0)
       }
 
       def draw {
        super draw
+        glColor3f(@text_color r / 255.0,
+                  @text_color g / 255.0,
+                  @text_color g / 255.0)
+	      glRasterPos2d(@rect x, @rect y)
+        "Hello world" each_byte() |b| {
+          glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, b)
+        }
       }
 
-      def on_lmouse_down: position {
+      def on_lmouse_up: position {
         if: (position in_rect?: @rect) then: {
-          "clicked!" println
+          on_click
           return true
         }
         return false
+      }
+
+      def on_lmouse_down: position {
+        "on_lmouse_down!" println
+      }
+
+      def on_click {
+        @on_click_handlers each: |h| {
+          h call: [self]
+        }
+      }
+      def on_click: handler {
+        @on_click_handlers << handler
       }
     }
   }

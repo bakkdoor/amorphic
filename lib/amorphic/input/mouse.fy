@@ -17,6 +17,24 @@ class Amorphic {
         # "button: #{button} state: #{state} x: #{x} y: #{y}" println
         # { "down!" println } if: (state == GLUT_DOWN)
         # { "up!" println } if: (state == GLUT_UP)
+        pos = (x,y)
+        match button {
+          case GLUT_LEFT_BUTTON ->
+            match state {
+              case GLUT_DOWN -> @gui on_lmouse_down: pos
+              case _ -> @gui on_lmouse_up: pos
+            }
+          case GLUT_RIGHT_BUTTON ->
+            match state {
+              case GLUT_DOWN -> @gui on_rmouse_down: pos
+              case _ -> @gui on_rmouse_up: pos
+            }
+          case GLUT_MIDDLE_BUTTON ->
+            match state {
+              case GLUT_DOWN -> @gui on_mmouse_down: pos
+              case _ -> @gui on_mmouse_up: pos
+            }
+        }
       }
 
       def entry: state {
