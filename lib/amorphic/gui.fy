@@ -8,14 +8,6 @@ class GUI {
 
   # Placeholder for the window object
   def initialize {
-    # Initliaze our GLUT code
-    glutInit()
-    # Setup a double buffer, RGBA color, alpha components and depth buffer
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
-    glutInitWindowSize(800, 600)
-    glutInitWindowPosition(0, 0)
-    @window = glutCreateWindow("humble beginnings")
-    setup_event_hooks
     @children = []
   }
 
@@ -33,78 +25,78 @@ class GUI {
     glut: 'idle is: 'idle
   }
 
-  def init_gl_window: width (640) height: height (480) {
-      # Background color to black
-      glClearColor(0.0, 0.0, 0.0, 0)
-      # Enables clearing of depth buffer
-      glClearDepth(1.0)
-      # Set type of depth test
-      glDepthFunc(GL_LEQUAL)
-      # Enable depth testing
-      glEnable(GL_DEPTH_TEST)
-      # Enable smooth color shading
-      glShadeModel(GL_SMOOTH)
+  def init_gl_window: @width (640) height: @height (480) {
+    # Initliaze our GLUT code
+    glutInit()
+    # Setup a double buffer, RGBA color, alpha components and depth buffer
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
+    glutInitWindowSize(800, 600)
+    glutInitWindowPosition(0, 0)
+    @window = glutCreateWindow("humble beginnings")
+    setup_event_hooks
 
-      glMatrixMode(GL_PROJECTION)
-      glLoadIdentity()
-      # Calculate aspect ratio of the window
-      gluPerspective(45.0, width / height, 0.1, 100.0)
+    # Background color to black
+    glClearColor(0.0, 0.0, 0.0, 0)
+    # Enables clearing of depth buffer
+    glClearDepth(1.0)
+    # Set type of depth test
+    glDepthFunc(GL_LEQUAL)
+    # Enable depth testing
+    glEnable(GL_DEPTH_TEST)
+    # Enable smooth color shading
+    glShadeModel(GL_SMOOTH)
 
-      glMatrixMode(GL_MODELVIEW)
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    # Calculate aspect ratio of the window
+    gluPerspective(45.0, @width / @height, 0.1, 100.0)
 
-      draw_gl_scene
+    glMatrixMode(GL_MODELVIEW)
+
+    draw_gl_scene
   }
 
-  def reshape: width height: height {
-      { height = 1 } if: $ height == 0
+  def reshape: @width height: @height {
+    { @height = 1 } if: $ @height == 0
 
-      # Reset current viewpoint and perspective transformation
-      glViewport(0, 0, width, height)
+    # Reset current viewpoint and perspective transformation
+    glViewport(0, 0, @width, @height)
 
-      glMatrixMode(GL_PROJECTION)
-      glLoadIdentity()
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
 
-      gluPerspective(45.0, width / height, 0.1, 100.0)
+    gluPerspective(45.0, @width / @height, 0.1, 100.0)
   }
 
 
   def draw_gl_scene {
-      # Clear the screen and depth buffer
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    # Clear the screen and depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-      # Reset the view
-      glMatrixMode(GL_MODELVIEW)
-      glLoadIdentity()
+    # Reset the view
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
 
-      # Move left 1.5 units and into the screen 6.0 units
-      glTranslatef(-1.5, 0.0, -6.0)
+    # Move left 1.5 units and into the screen 6.0 units
+    glTranslatef(0.0, 0.0, -0.1)
 
-      # Draw a triangle
-      glBegin(GL_POLYGON)
-          glVertex3f( 0.0,  1.0, 0.0)
-          glVertex3f( 1.0, -1.0, 0.0)
-          glVertex3f(-1.0, -1.0, 0.0)
-      glEnd()
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
 
-      # Move right 3 units
-      glTranslatef(3.0, 0.0, 0.0)
+    @children each: |c| {
+      c draw
+    }
 
-      # Draw a rectangle
-      glBegin(GL_QUADS)
-          glVertex3f(-1.0,  1.0, 0.0)
-          glVertex3f( 1.0,  1.0, 0.0)
-          glVertex3f( 1.0, -1.0, 0.0)
-          glVertex3f(-1.0, -1.0, 0.0)
-      glEnd()
+    glMatrixMode(GL_MODELVIEW)
 
-      # Swap buffers for display
-      glutSwapBuffers()
+    # Swap buffers for display
+    glutSwapBuffers()
   }
 
 
   # The idle function to handle
   def idle {
-      glutPostRedisplay()
+    glutPostRedisplay()
   }
 
   def glut: glutfunc is: method_name target: receiver (self) {
