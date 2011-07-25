@@ -3,20 +3,27 @@ class Amorphic {
     class Mouse {
       read_slots: ['cursor_pos, 'prev_cursor_pos]
       def initialize: @gui {
-        @cursor_pos = (0,0)
-        @prev_cursor_pos = @cursor_pos
+        @x, @y = 0, 0
+        @p_x, @p_y = 0, 0
         # TODO hook up into glut mouse events
+      }
+
+      def cursor_pos {
+        (@x, @y)
+      }
+
+      def prev_cursor_pos {
+        (@p_x, @p_y)
       }
 
       def setup_event_hooks {
         @gui glut: 'mouse is: 'mouse:state:x:y: target: self
         @gui glut: 'entry is: 'entry: target: self
+        @gui glut: 'passiveMotion is: 'passive_motion:y: target: self
+        @gui glut: 'motion is: 'passive_motion:y: target: self
       }
 
       def mouse: button state: state x: x y: y {
-        # "button: #{button} state: #{state} x: #{x} y: #{y}" println
-        # { "down!" println } if: (state == GLUT_DOWN)
-        # { "up!" println } if: (state == GLUT_UP)
         pos = (x,y)
         match button {
           case GLUT_LEFT_BUTTON ->
@@ -35,6 +42,12 @@ class Amorphic {
               case _ -> @gui on_mmouse_up: pos
             }
         }
+      }
+
+      def passive_motion: x y: y {
+        @p_x, @p_y = @x, @y
+        @x, @y = x, y
+        @gui on_mouse_move: x y: y
       }
 
       def entry: state {

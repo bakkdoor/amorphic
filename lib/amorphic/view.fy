@@ -53,7 +53,10 @@ class Amorphic {
     def resize: rect
     def on_key_down: key sender: sender (nil);
     def on_key_up: key sender: sender (nil);
-    def on_move: x y: y
+    def on_move: x y: y {
+      @rect x: (@rect x + x)
+      @rect y: (@rect y + y)
+    }
 
     def on_mouse_move: x y: y {
       if: (x == 0 && (y == 0)) then: {
@@ -84,6 +87,7 @@ class Amorphic {
     }
 
     def on_lmouse_up: position {
+      @gui unlock!
       @children reverse_each: |c| {
         if: (c on_lmouse_up: position) then: {
           return true
@@ -105,8 +109,11 @@ class Amorphic {
             return true
           }
         }
+
         unless: gui? do: {
           if: (position in_rect?: @rect) then: {
+            @gui active_element: self
+            @gui lock!
             return true
           }
         }

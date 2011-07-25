@@ -6,6 +6,7 @@ class Amorphic {
     include: Glut
 
     read_slot: 'window
+    read_write_slot: 'active_element
 
     def GUI create {
       @@gui = GUI new
@@ -83,7 +84,9 @@ class Amorphic {
     }
 
     def glut: glutfunc is: method_name target: receiver (self) {
-      glut_method = "glut#{glutfunc to_s capitalize}Func"
+      name = glutfunc to_s
+      name = name first capitalize + (name rest)
+      glut_method = "glut#{name}Func"
       match method_name {
         case Block -> send(glut_method, method_name to_proc)
         case _ -> send(glut_method, receiver method(message_name: method_name) to_proc)
@@ -96,6 +99,16 @@ class Amorphic {
 
     def post_message: sender receiver: receiver message: msg {
       "got message: #{msg} from: #{sender} receiver: #{receiver}" println
+    }
+
+    def locked? {
+      @locked
+    }
+    def lock! {
+      @locked = true
+    }
+    def unlock! {
+      @locked = false
     }
   }
 }
