@@ -17,6 +17,7 @@ class Amorphic {
 
     # Placeholder for the window object
     def initialize {
+      initialize: nil
       @gui = self
       @children = []
       @bgcolor = RGBA new: (0.7,0.7,0.7,0)
