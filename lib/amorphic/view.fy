@@ -134,7 +134,23 @@ class Amorphic {
       return false
     }
 
-    def on_lmouse_down: position
+    def on_lmouse_down: position {
+      if: visible? then: {
+        @children reverse_each: |c| {
+          if: (c on_lmouse_down: position) then: {
+            return true
+          }
+        }
+        unless: gui? do: {
+          if: (position in_rect?: @rect) then: {
+            on_click: position
+            return true
+          }
+        }
+      }
+      return false
+    }
+
     def on_rmouse_up: position
     def on_rmouse_down: position
 
@@ -186,5 +202,9 @@ class Amorphic {
       @needs_redraw
     }
     def needs_redraw: @needs_redraw
+
+    def gui? {
+      @is_gui
+    }
   }
 }

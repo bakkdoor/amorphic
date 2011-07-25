@@ -1,5 +1,5 @@
 class Amorphic {
-  class GUI {
+  class GUI : View {
     # Add GL and GLUT namespaces in to make porting easier
     include: Gl
     include: Glu
@@ -9,6 +9,7 @@ class Amorphic {
 
     # Placeholder for the window object
     def initialize {
+      @is_gui = true
       @children = []
       @bgcolor = RGBA new: (0.7,0.7,0.7,0)
     }
@@ -22,7 +23,7 @@ class Amorphic {
     }
 
     def setup_event_hooks {
-      glut: 'display is: 'draw_gl_scene
+      glut: 'display is: 'draw
       glut: 'reshape is: 'reshape:height:
       glut: 'idle is: 'idle
     }
@@ -52,7 +53,7 @@ class Amorphic {
     }
 
 
-    def draw_gl_scene {
+    def draw {
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity()
       glOrtho(0, @width, @height, 0, 0, 1)
