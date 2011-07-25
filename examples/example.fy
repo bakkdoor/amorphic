@@ -23,9 +23,15 @@ class Amorphic {
         button show
       }
 
+      copy_button = Views Button new: "Copy it!" rect: (320, 100)
+      copy_button on_click: {
+        @gui add_child: button
+      }
+
       @gui add_child: button
       @gui add_child: show_button
       @gui add_child: hide_button
+      @gui add_child: copy_button
     }
     def run {
       @gui main_loop
