@@ -4,7 +4,6 @@ class Amorphic {
   class ExampleApp {
     def initialize: @size ((800,600)) {
       @gui = GUI create: @size
-      input_engine = InputEngine create: @gui
       rect = Rect new: (10,10) size: (100,100)
       button = Views Button new: "Click.me.please!" rect: rect
       button background_color: $ Color Grey

@@ -12,7 +12,7 @@ class Amorphic {
       def keyboard: key x: x y: y {
         match key {
           case 27 -> # escape
-            glutDestroyWindow(@window)
+            glutDestroyWindow(@gui window)
             exit(0)
         }
         Glut glutPostRedisplay()

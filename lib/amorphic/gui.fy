@@ -21,6 +21,7 @@ class Amorphic {
       @gui = self
       @children = []
       background_color: $ RGBA new: (200, 200, 200, 0)
+      @title = ""
     }
 
     def setup_event_hooks {
@@ -35,10 +36,11 @@ class Amorphic {
       glutInitWindowSize(@width, @height)
       glutInitWindowPosition(0, 0)
       @window = glutCreateWindow(@title)
-      setup_event_hooks
 
       # smooth color shading
       glShadeModel(GL_SMOOTH)
+      @input_engine = InputEngine create: self
+      setup_event_hooks
     }
 
     def reshape: @width height: @height {
