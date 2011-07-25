@@ -7,27 +7,33 @@ class Amorphic {
         @on_click_handlers = []
         @text_color = RGBA new: (0.0, 0.0, 0.0, 0.0)
         @padding = 10
+        unless: (@rect width) do: {
+          @rect width: (@text size * 12)
+          @rect height: (18 + @padding)
+        }
       }
 
       def draw {
-       super draw
-        glColor3f(@text_color r / 255.0,
-                  @text_color g / 255.0,
-                  @text_color g / 255.0)
+        super draw
+        if: visible? then: {
+          glColor3f(@text_color r / 255.0,
+                    @text_color g / 255.0,
+                    @text_color g / 255.0)
 
-        text_x = @rect x + @padding
-        text_y = @rect y + (@rect height / 2)
+          text_x = @rect x + @padding
+          text_y = @rect y + (@rect height / 2)
 
-        # TODO: get rid of magic numbers
-        text = @text
-        if: (@text size * 18 > (@rect width)) then: {
-          max_letters = @rect width / 12
-          text = @text from: 0 to: (max_letters to_i)
-        }
+          # TODO: get rid of magic numbers
+          text = @text
+          if: (@text size * 18 > (@rect width)) then: {
+            max_letters = @rect width / 12
+            text = @text from: 0 to: (max_letters to_i)
+          }
 
-	      glRasterPos2d(text_x, text_y)
-        text each_byte() |b| {
-          glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, b)
+          glRasterPos2d(text_x, text_y + (@padding / 2))
+          text each_byte() |b| {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, b)
+          }
         }
       }
 

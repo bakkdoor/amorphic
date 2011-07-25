@@ -1,4 +1,15 @@
 class Amorphic {
+  class Rubinius Tuple {
+    def to_rect {
+      if: (size == 4) then: {
+        x, y, width, height = self
+        Rect new: (x,y) width: width height: height
+      } else: {
+        Rect new: self width: nil height: nil
+      }
+    }
+  }
+
   class Rect {
     read_write_slots: ['x, 'y, 'width, 'height]
 

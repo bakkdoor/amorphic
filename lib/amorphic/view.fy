@@ -6,6 +6,7 @@ class Amorphic {
     read_slots: ['position, 'parent, 'texture]
 
     def initialize: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
+      { @rect = @rect to_rect } if: (@rect is_a?: Tuple)
       @active_color = nil
       @inactive_color = nil
       @is_active = false
@@ -13,34 +14,35 @@ class Amorphic {
       @needs_redraw = false
       @is_visible = true
       @children = []
+      @background_color = Color White
     }
 
     def draw {
-      { return nil } unless: visible?
+      if: visible? then: {
+        x1, x2 = @rect left, @rect right
+        y1, y2 = @rect top, @rect bottom
 
-      x1, x2 = @rect left, @rect right
-      y1, y2 = @rect top, @rect bottom
+        glDisable(GL_LIGHTING)
+        if: @background_color then: {
+          r, g, b = @background_color r, @background_color g, @background_color b
+          glColor3f(r / 255.0,
+                    g / 255.0,
+                    b / 255.0)
+        } else: {
+          glColor3d(1, 1, 1)
+        }
 
-      glDisable(GL_LIGHTING)
-      if: @background_color then: {
-        r, g, b = @background_color r, @background_color g, @background_color b
-        glColor3f(r / 255.0,
-                  g / 255.0,
-                  b / 255.0)
-      } else: {
-        glColor3d(1, 1, 1)
-      }
+        glBegin(GL_QUADS)
+           glVertex2f(x1, y1)
+           glVertex2f(x2, y1)
+           glVertex2f(x2, y2)
+           glVertex2f(x1, y2)
+        glEnd()
 
-      glBegin(GL_QUADS)
-         glVertex2f(x1, y1)
-         glVertex2f(x2, y1)
-         glVertex2f(x2, y2)
-         glVertex2f(x1, y2)
-      glEnd()
-
-      # draw children
-      @children each: |c| {
-        c draw
+        # draw children
+        @children each: |c| {
+          c draw
+        }
       }
     }
 
@@ -130,6 +132,7 @@ class Amorphic {
         unless: gui? do: {
           if: (position in_rect?: @rect) then: {
             @gui active_element: self
+            @gui bring_to_front: self
             @gui lock!
             return true
           }

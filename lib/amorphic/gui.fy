@@ -109,5 +109,10 @@ class Amorphic {
     def unlock! {
       @locked = false
     }
+
+    def bring_to_front: child {
+      remove_child: child
+      add_child: child
+    }
   }
 }
