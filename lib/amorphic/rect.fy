@@ -2,7 +2,7 @@ class Amorphic {
   class Rect {
     read_slots: ['x, 'y, 'left, 'right, 'top, 'bottom, 'position, 'width, 'height]
     def initialize: @position width: @width height: @height {
-      @left, @right = @position x, @position x + @with
+      @left, @right = @position x, @position x + @width
       @top, @bottom = @position y, @position y + @height
       @x, @y = @position
     }
