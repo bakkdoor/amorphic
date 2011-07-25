@@ -35,25 +35,8 @@ class Amorphic {
       @window = glutCreateWindow("humble beginnings")
       setup_event_hooks
 
-      # Background color to black
-      glClearColor(0.0, 0.0, 0.0, 0)
-      # Enables clearing of depth buffer
-      glClearDepth(1.0)
-      # Set type of depth test
-      glDepthFunc(GL_LEQUAL)
-      # Enable depth testing
-      glEnable(GL_DEPTH_TEST)
       # Enable smooth color shading
       glShadeModel(GL_SMOOTH)
-
-      glMatrixMode(GL_PROJECTION)
-      glLoadIdentity()
-      # Calculate aspect ratio of the window
-      gluPerspective(45.0, @width / @height, 0.1, 100.0)
-
-      glMatrixMode(GL_MODELVIEW)
-
-      draw_gl_scene
     }
 
     def reshape: @width height: @height {
