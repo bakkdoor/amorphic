@@ -114,5 +114,10 @@ class Amorphic {
       remove_child: child
       add_child: child
     }
+
+    def push_to_back: child {
+      remove_child: child
+      @children unshift: child
+    }
   }
 }

@@ -153,6 +153,7 @@ class Amorphic {
 
     def hide {
       @is_visible = false
+      @gui push_to_back: self
     }
     def show {
       @is_visible = true
