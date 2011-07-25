@@ -11,5 +11,9 @@ class Amorphic {
         ((@y >= r_y) && (@y <= (r_y + r_height)))
       }
     }
+
+    def at: idx {
+      @coords at: idx
+    }
   }
 }
