@@ -66,6 +66,14 @@ class Amorphic {
         @on_click_handlers << handler
       }
 
+      def on_mouse_enter {
+        background_color: (background_color lightened_by: 20)
+      }
+
+      def on_mouse_leave {
+        background_color: (background_color darkened_by: 20)
+      }
+
       def handle_on_lmouse_down {
         # change background color
         unless: @orig_bg_color do: {

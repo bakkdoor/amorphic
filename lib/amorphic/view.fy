@@ -58,6 +58,9 @@ class Amorphic {
       @rect y: (@rect y + y)
     }
 
+    def on_mouse_enter
+    def on_mouse_leave
+
     def on_mouse_move: x y: y {
       if: (x == 0 && (y == 0)) then: {
         return false
@@ -78,6 +81,18 @@ class Amorphic {
             }
           }
 
+          mouse = InputEngine singleton mouse
+          prev_pos, curr_pos = mouse prev_cursor_pos, mouse cursor_pos
+          was_in_rect = prev_pos in_rect?: @rect
+          in_rect = curr_pos in_rect?: @rect
+          if: (was_in_rect xor: in_rect) then: {
+            if: was_in_rect then: {
+              on_mouse_leave
+            } else: {
+              on_mouse_enter
+            }
+          }
+
           if: ((x,y) in_rect?: @rect) then: {
             retval = true
           }
@@ -85,6 +100,8 @@ class Amorphic {
       }
       return retval
     }
+
+    def on_mouse_enter
 
     def on_lmouse_up: position {
       @gui unlock!
