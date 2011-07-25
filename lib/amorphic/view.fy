@@ -1,12 +1,14 @@
 class Amorphic {
   class View {
-    read_write_slots: ['width, 'height, 'z_order, 'gui, 'material]
+    include: Gl
+
+    read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'color]
     read_slots: ['position, 'parent, 'texture]
 
     # virtual int Create(CGUIElement *pParent, tRect WidgetRect, CTexture *pTexture = NULL,
     # CMaterial *pMaterial = NULL, bool bBorder = false);
 
-    def initialize: @parent rect: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
+    def initialize: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
       @active_color = nil
       @inactive_color = nil
       @is_active = false
@@ -151,8 +153,17 @@ class Amorphic {
       @is_visible
     }
 
-    def parent: parent
-    def child?: element
+    def parent: @parent
+    def add_child: child {
+      @children << child
+      child parent: self
+    }
+    def remove_child: child {
+      @children remove: child
+    }
+    def child?: element {
+      @child include?: element
+    }
 
     def auto_calc? {
       @is_auto_calc
