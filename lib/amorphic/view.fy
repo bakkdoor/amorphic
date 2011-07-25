@@ -5,34 +5,36 @@ class Amorphic {
     read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'color]
     read_slots: ['position, 'parent, 'texture]
 
-    # virtual int Create(CGUIElement *pParent, tRect WidgetRect, CTexture *pTexture = NULL,
-    # CMaterial *pMaterial = NULL, bool bBorder = false);
-
     def initialize: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
       @active_color = nil
       @inactive_color = nil
       @is_active = false
       @is_auto_calc = false
       @needs_redraw = false
+      @is_visible = true
+      @children = []
     }
 
     def draw {
       { return nil } unless: visible?
-      left, right, top, bottom = @rect get_slots: ['left, 'right, 'top, 'bottom]
+
+      x1, x2 = @rect left, @rect right
+      y1, y2 = @rect top, @rect bottom
+
       unless: @texture do: {
         glDisable(GL_TEXTURE_2D)
         if: @material then: {
-          glDisable(GL_LIGHTNING)
+          glDisable(GL_LIGHTING)
           glColor4fv(@material ambient rgba);
         } else: {
-          glDisable(GL_LIGHTNING)
+          glDisable(GL_LIGHTING)
           glColor3d(255,255,255)
         }
         glBegin(GL_QUADS)
-        glVertex3d(left, bottom, 0)
-        glVertex3d(right, bottom, 0)
-        glVertex3d(right, top, 0)
-        glVertex3d(left, top, 0)
+           glVertex2f(x1, y1)
+           glVertex2f(x2, y1)
+           glVertex2f(x2, y2)
+           glVertex2f(x1, y2)
         glEnd()
       } else: {
         m_pTexture bind
