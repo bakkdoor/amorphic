@@ -52,8 +52,8 @@ class Amorphic {
 
       def entry: state {
         match state {
-          case GLUT_LEFT -> "left!" println
-          case GLUT_ENTERED -> "entered!" println
+          case GLUT_LEFT -> nil #@gui on_mouse_leave
+          case GLUT_ENTERED -> nil #@gui on_mouse_enter
         }
       }
     }
