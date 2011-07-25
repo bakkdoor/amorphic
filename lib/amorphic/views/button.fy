@@ -20,6 +20,10 @@ class Amorphic {
       }
 
       def on_lmouse_up: position {
+        if: @orig_bg_color then: {
+          background_color: @orig_bg_color
+          @orig_bg_color = nil
+        }
         if: (position in_rect?: @rect) then: {
           on_click
           return true
@@ -28,16 +32,37 @@ class Amorphic {
       }
 
       def on_lmouse_down: position {
-        "on_lmouse_down!" println
+        if: (position in_rect?: @rect) then: {
+          on_lmouse_down
+          return true
+        }
+        return true
       }
 
       def on_click {
         @on_click_handlers each: |h| {
           h call: [self]
         }
+        if: @orig_bg_color then: {
+          background_color: @orig_bg_color
+          @orig_bg_color = nil
+        }
       }
+
       def on_click: handler {
         @on_click_handlers << handler
+      }
+
+      def on_lmouse_down {
+        # change background color
+        unless: @orig_bg_color do: {
+          @orig_bg_color = background_color
+          new_color = @orig_bg_color darkened_by: 50
+          background_color: new_color
+        } else: {
+          background_color: @orig_bg_color
+          @orig_bg_color = nil
+        }
       }
     }
   }

@@ -23,7 +23,6 @@ class Amorphic {
 
       glDisable(GL_LIGHTING)
       if: @background_color then: {
-        @background_color inspect println
         r, g, b = @background_color r, @background_color g, @background_color b
         glColor3f(r / 255.0,
                   g / 255.0,
@@ -108,7 +107,6 @@ class Amorphic {
         }
         unless: gui? do: {
           if: (position in_rect?: @rect) then: {
-            on_click: position
             return true
           }
         }
