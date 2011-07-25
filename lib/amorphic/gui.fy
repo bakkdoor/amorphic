@@ -8,8 +8,8 @@ class Amorphic {
     read_slot: 'window
     read_write_slot: 'active_element
 
-    def GUI create {
-      @@gui = GUI new
+    def GUI create: size ((640, 480)) {
+      @@gui = GUI new: size
     }
 
     def GUI singleton {
@@ -17,11 +17,13 @@ class Amorphic {
     }
 
     # Placeholder for the window object
-    def initialize {
-      initialize: nil
+    def initialize: size ((640, 480)) {
+      super initialize: $ Rect new: (0,0) size: size
+      @width, @height = @rect width, @rect height
       @gui = self
       @children = []
       @bgcolor = RGBA new: (0.7,0.7,0.7,0)
+      init_gl_window
     }
 
     def setup_event_hooks {
@@ -30,7 +32,7 @@ class Amorphic {
       glut: 'idle is: 'idle
     }
 
-    def init_gl_window: @width (640) height: @height (480) {
+    def init_gl_window {
       glutInit()
       glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
       glutInitWindowSize(@width, @height)

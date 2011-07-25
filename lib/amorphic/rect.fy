@@ -10,9 +10,9 @@ class Amorphic {
       @x, @y = left, top
     }
 
-    def initialize: @position size: size {
+    def initialize: position size: size {
       width, height = size
-      initialize: @position width: width height: height
+      initialize: position width: width height: height
     }
 
     def position {
