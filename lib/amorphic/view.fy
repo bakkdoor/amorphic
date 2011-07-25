@@ -109,7 +109,7 @@ class Amorphic {
             }
           }
 
-          if: (Point new: (x,y) in_rect?: @rect) then: {
+          if: ((x,y) in_rect?: @rect) then: {
             retval = true
           }
         }

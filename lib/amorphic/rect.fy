@@ -6,9 +6,15 @@ class Amorphic {
       @top, @bottom = @position y, @position y + @height
       @x, @y = @position
     }
+
     def initialize: @left right: @right top: @top bottom: @bottom {
       @x, @y = @left, @top
       @position = (@x, @y)
+    }
+
+    def initialize: @position size: size {
+      width, height = size
+      initialize: @position width: width height: height
     }
   }
 }

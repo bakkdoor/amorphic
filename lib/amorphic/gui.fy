@@ -30,7 +30,7 @@ class GUI {
     glutInit()
     # Setup a double buffer, RGBA color, alpha components and depth buffer
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
-    glutInitWindowSize(800, 600)
+    glutInitWindowSize(@width, @height)
     glutInitWindowPosition(0, 0)
     @window = glutCreateWindow("humble beginnings")
     setup_event_hooks

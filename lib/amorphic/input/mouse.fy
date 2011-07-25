@@ -3,7 +3,7 @@ class Amorphic {
     class Mouse {
       read_slots: ['cursor_pos, 'prev_cursor_pos]
       def initialize: @gui {
-        @cursor_pos = Point new: (0,0)
+        @cursor_pos = (0,0)
         @prev_cursor_pos = @cursor_pos
         # TODO hook up into glut mouse events
       }
