@@ -1,3 +1,3 @@
 class Amorphic {
-  RGB = Struct new: ['r, 'g, 'b, 'a]
+  RGBA = Struct new: ['r, 'g, 'b, 'a]
 }
