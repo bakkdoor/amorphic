@@ -13,8 +13,9 @@ class Amorphic {
                   @text_color g / 255.0,
                   @text_color g / 255.0)
 
-        glRasterPos2d(text_x, text_y + (@padding / 2))
-        text each_byte() |b| {
+
+        glRasterPos2d(@pos x, @pos y)
+        @text each_byte() |b| {
           glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, b)
         }
       }
