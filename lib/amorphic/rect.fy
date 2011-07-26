@@ -5,7 +5,7 @@ class Amorphic {
         x, y, width, height = self
         Rect new: (x,y) width: width height: height
       } else: {
-        Rect new: self width: nil height: nil
+        Rect new: self width: 0 height: 0
       }
     }
   }

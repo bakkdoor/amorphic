@@ -7,7 +7,7 @@ class Amorphic {
         @on_click_handlers = []
         @text_color = RGBA new: (0.0, 0.0, 0.0, 0.0)
         @padding = 10
-        unless: (@rect width) do: {
+        if: (@rect width == 0) then: {
           @rect width: (@text size * 12)
           @rect height: (18 + @padding)
         }
