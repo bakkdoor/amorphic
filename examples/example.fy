@@ -35,6 +35,7 @@ class Amorphic {
       @gui add_child: show_button
       @gui add_child: hide_button
       @gui add_child: copy_button
+      @gui add_child: $ Views TextView new: "Amorphic Gui System, yo." position: (300,300)
     }
     def run {
       @gui start
