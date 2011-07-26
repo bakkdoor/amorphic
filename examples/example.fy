@@ -23,8 +23,12 @@ class Amorphic {
       }
 
       copy_button = Views Button new: "Copy it!" rect: (320, 100)
+      last_rect = button rect
       copy_button on_click: {
-        @gui add_child: button
+        b = button copy
+        last_rect = last_rect + (10,10)
+        b rect: last_rect
+        @gui add_child: b
       }
 
       @gui add_child: button

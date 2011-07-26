@@ -30,6 +30,10 @@ class Amorphic {
       (@x, @y)
     }
 
+    def size {
+      (@width, @height)
+    }
+
     def left {
       @x
     }
@@ -44,6 +48,18 @@ class Amorphic {
 
     def bottom {
       @y + @height
+    }
+
+    def + other {
+      match other {
+        case Rect ->
+          r = Rect new: position size: size
+          ['x, 'y, 'width, 'height] each: |s| {
+            r set_slot: s value: $ get_slot: s + (other get_slot: s . to_i)
+          }
+          r
+        case _ -> self + (other to_rect)
+      }
     }
   }
 }

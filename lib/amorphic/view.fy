@@ -2,8 +2,8 @@ class Amorphic {
   class View {
     include: Gl
 
-    read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'background_color]
-    read_slots: ['position, 'parent, 'texture]
+    read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'background_color, 'rect]
+    read_slots: ['parent, 'texture]
 
     def initialize: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
       { @rect = @rect to_rect } if: (@rect is_a?: Tuple)
@@ -15,6 +15,14 @@ class Amorphic {
       @is_visible = true
       @children = []
       @background_color = Color White
+    }
+
+    def copy {
+      view = self class new
+      self slots each: |s| {
+        view set_slot: s value: (get_slot: s)
+      }
+      view
     }
 
     def draw {
@@ -44,6 +52,10 @@ class Amorphic {
           c draw
         }
       }
+    }
+
+    def position {
+      @rect position
     }
 
     def has_border? {
