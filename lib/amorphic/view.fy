@@ -2,7 +2,7 @@ class Amorphic {
   class View {
     include: Gl
 
-    read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'background_color, 'rect]
+    read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'background_color, 'rect, 'before_draw]
     read_slots: ['parent, 'texture]
 
     def initialize: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
@@ -26,6 +26,8 @@ class Amorphic {
     }
 
     def draw {
+      { @before_draw call: [self] } if: @before_draw
+
       if: visible? then: {
         x1, x2 = @rect left, @rect right
         y1, y2 = @rect top, @rect bottom

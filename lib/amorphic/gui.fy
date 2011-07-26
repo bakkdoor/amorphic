@@ -22,6 +22,7 @@ class Amorphic {
       @children = []
       background_color: $ RGBA new: (200, 200, 200, 0)
       @title = ""
+      @last_draw = Time now
     }
 
     def setup_event_hooks {
@@ -57,6 +58,7 @@ class Amorphic {
 
 
     def draw {
+      @last_draw = Time now
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity()
       glOrtho(0, @width, @height, 0, 0, 1)
@@ -123,7 +125,7 @@ class Amorphic {
     }
 
     def fps {
-      60 / (Time now - @last_draw)
+      1 / (Time now - @last_draw) ceil
     }
   }
 }

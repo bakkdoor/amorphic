@@ -1,6 +1,7 @@
 class Amorphic {
   class Views {
     class TextView : View {
+      read_write_slots: ['text, 'pos]
       def initialize: @text position: @pos {
         initialize: (@pos to_rect)
         @text_color = Color Black

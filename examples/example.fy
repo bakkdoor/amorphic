@@ -36,6 +36,16 @@ class Amorphic {
       @gui add_child: hide_button
       @gui add_child: copy_button
       @gui add_child: $ Views TextView new: "Amorphic Gui System, yo." position: (300,300)
+      fps_view = Views TextView new: (@gui fps to_s) position: (720,20)
+      @count = 0
+      fps_view before_draw: {
+        if: (@count > 100) then: {
+          fps_view text: $ (@gui fps to_s) ++ " FPS"
+          @count = 0
+        }
+        @count = @count + 1
+      }
+      @gui add_child: fps_view
     }
     def run {
       @gui start
