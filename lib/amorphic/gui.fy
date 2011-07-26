@@ -121,5 +121,9 @@ class Amorphic {
       remove_child: child
       @children unshift: child
     }
+
+    def fps {
+      60 / (Time now - @last_draw)
+    }
   }
 }
