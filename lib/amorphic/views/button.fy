@@ -38,22 +38,26 @@ class Amorphic {
       }
 
       def on_lmouse_up: position {
-        if: @orig_bg_color then: {
-          background_color: @orig_bg_color
-          @orig_bg_color = nil
-        }
-        if: (position in_rect?: @rect) then: {
-          handle_on_click
-          return true
+        if: visible? then: {
+          if: @orig_bg_color then: {
+            background_color: @orig_bg_color
+            @orig_bg_color = nil
+          }
+          if: (position in_rect?: @rect) then: {
+            handle_on_click
+            return true
+          }
         }
         return false
       }
 
       def on_lmouse_down: position {
         super on_lmouse_down: position
-        if: (position in_rect?: @rect) then: {
-          handle_on_lmouse_down
-          return true
+        if: visible? then: {
+          if: (position in_rect?: @rect) then: {
+            handle_on_lmouse_down
+            return true
+          }
         }
         return false
       }
