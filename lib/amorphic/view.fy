@@ -121,6 +121,7 @@ class Amorphic {
 
     def on_lmouse_up: position {
       @gui unlock!
+      @gui remove_context_menu: true
       @children reverse_each: |c| {
         if: (c on_lmouse_up: position) then: {
           return true
@@ -142,7 +143,6 @@ class Amorphic {
             return true
           }
         }
-
         unless: gui? do: {
           if: (position in_rect?: @rect) then: {
             @gui active_element: self
@@ -155,7 +155,23 @@ class Amorphic {
       return false
     }
 
-    def on_rmouse_up: position
+    def on_rmouse_up: position {
+      if: visible? then: {
+        @children reverse_each: |c| {
+          if: (c on_rmouse_up: position) then: {
+            return true
+          }
+        }
+        unless: gui? do: {
+          if: (position in_rect?: @rect) then: {
+            @gui context_menu: position
+            return true
+          }
+        }
+        return false
+      }
+    }
+
     def on_rmouse_down: position
 
     def child_by_index: index
@@ -183,6 +199,7 @@ class Amorphic {
       child parent: self
     }
     def remove_child: child {
+      "removing child: #{child}" println
       @children remove: child
     }
     def child?: element {

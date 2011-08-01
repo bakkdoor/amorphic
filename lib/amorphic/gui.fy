@@ -5,7 +5,7 @@ class Amorphic {
     include: Glut
 
     read_slot: 'window
-    read_write_slots: ['active_element, 'title]
+    read_write_slots: ['active_element, 'title, 'remove_context_menu]
 
     def GUI create: size ((640, 480)) {
       @@gui = GUI new: size
@@ -58,6 +58,9 @@ class Amorphic {
 
 
     def draw {
+      { remove_context_menu } if: @remove_context_menu
+      @remove_context_menu = false
+
       @last_draw = Time now
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity()
@@ -126,6 +129,19 @@ class Amorphic {
 
     def fps {
       1 / (Time now - @last_draw) ceil
+    }
+
+    def context_menu: position {
+      remove_context_menu
+      @context_menu = Views Menus ContextMenu new: ["Click me here!"] position: position
+      add_child: @context_menu
+    }
+
+    def remove_context_menu {
+      if: @context_menu then: {
+        remove_child: @context_menu
+        @context_menu = nil
+      }
     }
   }
 }
