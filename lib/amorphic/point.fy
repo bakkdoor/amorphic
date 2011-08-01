@@ -17,5 +17,13 @@ class Amorphic {
         ((@y >= r_y) && (@y <= (r_y + r_height)))
       }
     }
+
+    def + other {
+      (at: 0 + (other at: 0), at: 1 + (other at: 1))
+    }
+
+    def - other {
+      (at: 0 - (other at: 0), at: 1 - (other at: 1))
+    }
   }
 }
