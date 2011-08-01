@@ -10,6 +10,14 @@ class Amorphic {
       at: 1
     }
 
+    def x: x {
+      at: 0 put: x
+    }
+
+    def y: y {
+      at: 1 put: y
+    }
+
     def in_rect?: rect {
       r_x, r_y, r_height, r_width = rect get_slots: ['x, 'y, 'height, 'width]
       @x, @y = x, y
