@@ -4,6 +4,7 @@ class Amorphic {
     include: Glu
     include: Glut
 
+    @@gui = nil
     read_slot: 'window
     read_write_slots: ['active_element, 'title]
 
