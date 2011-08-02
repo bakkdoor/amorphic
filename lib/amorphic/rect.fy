@@ -26,12 +26,24 @@ class Amorphic {
       initialize: position width: width height: height
     }
 
+    def copy {
+      Rect new: position width: @width height: @height
+    }
+
     def position {
       (@x, @y)
     }
 
+    def position: position {
+      @x, @y = position
+    }
+
     def size {
       (@width, @height)
+    }
+
+    def size: size {
+      @width, @height = size
     }
 
     def left {
@@ -60,6 +72,22 @@ class Amorphic {
           r
         case _ -> self + (other to_rect)
       }
+    }
+
+    def - other {
+      match other {
+        case Rect ->
+          r = Rect new: position size: size
+          ['x, 'y, 'width, 'height] each: |s| {
+            r set_slot: s value: $ get_slot: s - (other get_slot: s . to_i)
+          }
+          r
+        case _ -> self - (other to_rect)
+      }
+    }
+
+    def to_rect {
+      self
     }
   }
 }
