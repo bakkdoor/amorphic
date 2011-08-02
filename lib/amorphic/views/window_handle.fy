@@ -5,6 +5,8 @@ class Amorphic {
 
       def initialize: @text rect: @rect window: @window {
         initialize: @text rect: @rect
+        @text_view text_color: Color White
+        padding: 5
       }
 
       def on_move: x y: y {
