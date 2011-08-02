@@ -114,7 +114,7 @@ class Amorphic {
       @locked = false
     }
 
-    def bring_to_front: subview {o
+    def bring_to_front: subview {
       remove_view: subview
       add_view: subview
     }
