@@ -28,14 +28,14 @@ class Amorphic {
         b = button copy
         last_rect = last_rect + (10,10)
         b rect: last_rect
-        @gui add_child: b
+        @gui add_view: b
       }
 
-      @gui add_child: button
-      @gui add_child: show_button
-      @gui add_child: hide_button
-      @gui add_child: copy_button
-      @gui add_child: $ Views TextView new: "Amorphic Gui System, yo." position: (300,300)
+      @gui add_view: button
+      @gui add_view: show_button
+      @gui add_view: hide_button
+      @gui add_view: copy_button
+      @gui add_view: $ Views TextView new: "Amorphic Gui System, yo." position: (300,300)
       fps_view = Views TextView new: (@gui fps to_s) position: (720,20)
       @count = 0
       fps_view before_draw: {
@@ -45,7 +45,7 @@ class Amorphic {
         }
         @count = @count + 1
       }
-      @gui add_child: fps_view
+      @gui add_view: fps_view
     }
     def run {
       @gui start

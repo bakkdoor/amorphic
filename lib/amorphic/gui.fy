@@ -19,7 +19,7 @@ class Amorphic {
       super initialize: $ Rect new: (0,0) size: size
       @width, @height = @rect width, @rect height
       @gui = self
-      @children = []
+      @subviews = []
       background_color: $ RGBA new: (200, 200, 200, 0)
       @title = ""
       @last_draw = Time now
@@ -74,7 +74,7 @@ class Amorphic {
                    background_color a)
       glClear(GL_COLOR_BUFFER_BIT)
 
-      @children each: |c| {
+      @subviews each: |c| {
         c draw
       }
 
@@ -114,14 +114,14 @@ class Amorphic {
       @locked = false
     }
 
-    def bring_to_front: child {
-      remove_child: child
-      add_child: child
+    def bring_to_front: subview {
+      remove_view: subview
+      add_view: subview
     }
 
-    def push_to_back: child {
-      remove_child: child
-      @children unshift: child
+    def push_to_back: subview {
+      remove_view: subview
+      @subviews unshift: subview
     }
 
     def fps {
