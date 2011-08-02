@@ -15,6 +15,7 @@ class Amorphic {
       @is_visible = true
       @subviews = []
       @background_color = Color White
+      @gui = GUI singleton
     }
 
     def copy {
