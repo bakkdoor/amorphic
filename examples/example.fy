@@ -46,6 +46,9 @@ class Amorphic {
         @count = @count + 1
       }
       @gui add_view: fps_view
+
+      window = Views BasicWindow new: "My BasicWindow!" rect: (100,100,600,400)
+      @gui add_view: window
     }
     def run {
       @gui start

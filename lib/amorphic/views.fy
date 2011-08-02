@@ -1,2 +1,5 @@
 require: "views/button"
 require: "views/text_view"
+require: "views/label"
+require: "views/window_handle"
+require: "views/basic_window"
