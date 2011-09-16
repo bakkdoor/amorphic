@@ -1,4 +1,4 @@
-require: "../lib/amorphic"
+require: "../lib/amorphic/point"
 
 FancySpec describe: Amorphic Point with: {
   it: "creates a point with a x and y value" when: {
