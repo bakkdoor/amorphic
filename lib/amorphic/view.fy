@@ -75,8 +75,8 @@ class Amorphic {
     def on_key_up: key sender: sender (nil);
     def on_move: x y: y {
       if: @movable then: {
-        @rect x: (@rect x + x)
-        @rect y: (@rect y + y)
+        @rect x+: x
+        @rect y+: y
 
         # move subviews as well
         @movable = false

@@ -26,6 +26,14 @@ class Amorphic {
       initialize: position width: width height: height
     }
 
+    def x+: increment {
+      @x = @x + increment
+    }
+
+    def y+: increment {
+      @y = @y + increment
+    }
+
     def copy {
       Rect new: position width: @width height: @height
     }
