@@ -5,30 +5,34 @@ class Amorphic {
     def initialize: @size ((800,600)) {
       @gui = GUI create: @size
       rect = Rect new: (10,10) size: (100,100)
-      button = Views Button new: "Click.me.please!" rect: rect
-      button background_color: $ Color Grey
-      button text_color: $ Color White
-      button on_click: |sender| {
-        "Clicked!" println
+      button = Views Button new: "Click.me.please!" rect: rect . do: {
+        background_color: Color Grey
+        text_color: Color White
+        on_click: {
+          "Clicked!" println
+        }
       }
 
-      hide_button = Views Button new: "Hide it!" rect: (120, 100)
-      hide_button on_click: {
-        button hide
+      hide_button = Views Button new: "Hide it!" rect: (120, 100) . do: {
+        on_click: {
+          button hide
+        }
       }
 
-      show_button = Views Button new: "Show it!" rect: (220, 100)
-      show_button on_click: {
-        button show
+      show_button = Views Button new: "Show it!" rect: (220, 100) . do: {
+        on_click: {
+          button show
+        }
       }
 
-      copy_button = Views Button new: "Copy it!" rect: (320, 100)
-      last_rect = button rect
-      copy_button on_click: {
-        b = button copy
-        last_rect = last_rect + (10,10)
-        b rect: last_rect
-        @gui add_view: b
+      copy_button = Views Button new: "Copy it!" rect: (320, 100) . do: {
+        last_rect = button rect
+        on_click: {
+          b = button copy
+          last_rect = last_rect + (10,10)
+          b rect: last_rect
+          @gui add_view: b
+        }
       }
 
       @gui add_view: button
