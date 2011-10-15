@@ -5,38 +5,42 @@ class Amorphic {
     def initialize: @size ((800,600)) {
       @gui = GUI create: @size
       rect = Rect new: (10,10) size: (100,100)
-      button = Views Button new: "Click.me.please!" rect: rect
-      button background_color: $ Color Grey
-      button text_color: $ Color White
-      button on_click: |sender| {
-        "Clicked!" println
+      button = Views Button new: "Click.me.please!" rect: rect . do: {
+        background_color: Color Grey
+        text_color: Color White
+        on_click: {
+          "Clicked!" println
+        }
       }
 
-      hide_button = Views Button new: "Hide it!" rect: (120, 100)
-      hide_button on_click: {
-        button hide
+      hide_button = Views Button new: "Hide it!" rect: (120, 100) . do: {
+        on_click: {
+          button hide
+        }
       }
 
-      show_button = Views Button new: "Show it!" rect: (220, 100)
-      show_button on_click: {
-        button show
+      show_button = Views Button new: "Show it!" rect: (220, 100) . do: {
+        on_click: {
+          button show
+        }
       }
 
-      copy_button = Views Button new: "Copy it!" rect: (320, 100)
-      last_rect = button rect
-      copy_button on_click: {
-        b = button copy
-        last_rect = last_rect + (10,10)
-        b rect: last_rect
-        @gui add_child: b
+      copy_button = Views Button new: "Copy it!" rect: (320, 100) . do: {
+        last_rect = button rect
+        on_click: {
+          b = button copy
+          last_rect = last_rect + (10,10)
+          b rect: last_rect
+          @gui add_view: b
+        }
       }
 
       @gui do: {
-        add_child: button
-        add_child: show_button
-        add_child: hide_button
-        add_child: copy_button
-        add_child: $ Views TextView new: "Amorphic Gui System, yo." position: (300,300)
+        add_view: button
+        add_view: show_button
+        add_view: hide_button
+        add_view: copy_button
+        add_view: $ Views TextView new: "Amorphic Gui System, yo." position: (300,300)
       }
 
       fps_view = Views TextView new: (@gui fps to_s) position: (720,20)
@@ -48,7 +52,10 @@ class Amorphic {
         }
         @count = @count + 1
       }
-      @gui add_child: fps_view
+      @gui add_view: fps_view
+
+      window = Views BasicWindow new: "My BasicWindow!" rect: (100,100,600,400)
+      @gui add_view: window
     }
     def run {
       @gui start

@@ -3,18 +3,22 @@ class Amorphic {
     include: Gl
 
     read_write_slots: ['width, 'height, 'z_order, 'gui, 'material, 'background_color, 'rect, 'before_draw]
+    write_slots: ['movable, 'visible, 'active, 'auto_calc, 'draggable]
     read_slots: ['parent, 'texture]
 
     def initialize: @rect texture: @texture (nil) material: @material (nil) has_border: @has_border (false) {
       { @rect = @rect to_rect } if: (@rect is_a?: Tuple)
       @active_color = nil
       @inactive_color = nil
-      @is_active = false
-      @is_auto_calc = false
+      @active = false
+      @movable = true
+      @draggable = true
+      @auto_calc = false
       @needs_redraw = false
-      @is_visible = true
-      @children = []
+      @visible = true
+      @subviews = []
       @background_color = Color White
+      @gui = GUI singleton
     }
 
     def copy {
@@ -49,9 +53,9 @@ class Amorphic {
            glVertex2f(x1, y2)
         glEnd()
 
-        # draw children
-        @children each: |c| {
-          c draw
+        # draw subviews
+        @subviews each: |sv| {
+          sv draw
         }
       }
     }
@@ -70,8 +74,17 @@ class Amorphic {
     def on_key_down: key sender: sender (nil);
     def on_key_up: key sender: sender (nil);
     def on_move: x y: y {
-      @rect x: (@rect x + x)
-      @rect y: (@rect y + y)
+      if: @movable then: {
+        @rect x+: x
+        @rect y+: y
+
+        # move subviews as well
+        @movable = false
+        @subviews each: |sv| {
+          sv on_move: x y: y
+        }
+        @movable = true
+      }
     }
 
     def on_mouse_enter
@@ -82,8 +95,8 @@ class Amorphic {
         return false
       }
       retval = false
-      @children reverse_each: |c| {
-        retval = retval || (c on_mouse_move: x y: y)
+      @subviews reverse_each: |sv| {
+        retval = retval || (sv on_mouse_move: x y: y)
       }
 
       unless: gui? do: {
@@ -92,8 +105,10 @@ class Amorphic {
             cursor_pos = InputEngine singleton mouse cursor_pos
             prev_cursor_pos = InputEngine singleton mouse prev_cursor_pos
             if: (@gui active_element == self) then: {
-              on_move: (cursor_pos x - (prev_cursor_pos x)) y: (cursor_pos y - (prev_cursor_pos y))
-              return true
+              if: @draggable then: {
+                on_move: (cursor_pos x - (prev_cursor_pos x)) y: (cursor_pos y - (prev_cursor_pos y))
+                return true
+              }
             }
           }
 
@@ -121,8 +136,8 @@ class Amorphic {
 
     def on_lmouse_up: position {
       @gui unlock!
-      @children reverse_each: |c| {
-        if: (c on_lmouse_up: position) then: {
+      @subviews reverse_each: |sv| {
+        if: (sv on_lmouse_up: position) then: {
           return true
         }
       }
@@ -137,8 +152,8 @@ class Amorphic {
 
     def on_lmouse_down: position {
       if: visible? then: {
-        @children reverse_each: |c| {
-          if: (c on_lmouse_down: position) then: {
+        @subviews reverse_each: |sv| {
+          if: (sv on_lmouse_down: position) then: {
             return true
           }
         }
@@ -158,50 +173,56 @@ class Amorphic {
     def on_rmouse_up: position
     def on_rmouse_down: position
 
-    def child_by_index: index
-    def child_by_type: view_type
-    def child_count
-    def remove_child: child_view
+    def view_by_index: index
+    def view_by_type: view_type
+    def view_count
     def z_order: new_z_order
     def z_order
 
     def hide {
-      @is_visible = false
+      @visible = false
       @gui push_to_back: self
     }
     def show {
-      @is_visible = true
+      @visible = true
     }
     def visible? {
-      @is_visible
+      @visible
     }
 
     def parent: @parent
-    def add_child: child {
-      @children << child
-      child gui: @gui
-      child parent: self
+    def add_view: subview {
+      @subviews << subview
+      subview gui: @gui
+      subview parent: self
     }
-    def remove_child: child {
-      @children remove: child
+    def remove_view: subview {
+      @subviews remove: subview
     }
-    def child?: element {
-      @child include?: element
+    def subview?: element {
+      @subviews include?: element
     }
 
     def auto_calc? {
-      @is_auto_calc
+      @auto_calc
     }
-    def auto_calc: @is_auto_calc
 
     def active? {
-      @is_active
+      @active
     }
     def activate {
-      @is_active = true
+      @active = true
     }
     def deactivate {
-      @is_active = false
+      @active = false
+    }
+
+    def movable? {
+      @movable
+    }
+
+    def draggable? {
+      @draggable
     }
 
     def needs_redraw? {
